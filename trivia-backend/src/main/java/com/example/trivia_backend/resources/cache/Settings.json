@@ -1,0 +1,6 @@
+{
+  "questionsPerRound": 4,
+  "maxLives": 5,
+  "fetchBatchSize": 10,
+  "categorySelectionSize" : 3
+}
