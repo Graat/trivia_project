@@ -82,20 +82,28 @@ public class TriviaService {
             fetchNextQuestions(); // Lazy loading fallback
         }
         Question question = session.getCurrentQuestions().removeFirst();
+        session.setCurrentQuestion(question);
         session.addQuestion(question);
         return QuestionDTO.from(question);
     }
 
     public AnswerResultDTO submitAnswer(AnswerCheckDTO answerDTO) {
+        System.out.println("before session check");
         if (session == null) {
             throw new IllegalStateException("Game not started.");
         }
-
+        System.out.println("before Id check");
         if (!session.getCurrentQuestion().id().toString().equals(answerDTO.questionId())) {
             throw new IllegalArgumentException("Invalid question ID");
         }
-
+        System.out.println("Hello, world!");
         boolean isCorrect = session.checkAnswer(answerDTO.answer());
+        if (isCorrect) {
+            session.increaseScore(1);
+        }
+        else{
+            session.decreaseLives();
+        }
         return AnswerResultDTO.from(session, isCorrect);
     }
 }

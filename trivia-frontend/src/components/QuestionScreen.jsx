@@ -15,7 +15,8 @@ export default function QuestionScreen() {
     setShowNextButton(false);
   };
 
-  const submitAnswer = async (answer) => {
+const submitAnswer = async (answer) => {
+  try {
     const res = await api.post('/game/answer', {
       questionId: question.questionId,
       answer: answer,
@@ -29,9 +30,12 @@ export default function QuestionScreen() {
       setFeedback('❌ Wrong!');
     }
 
-    // Disable answer buttons, show "Next Question"
     setShowNextButton(true);
-  };
+  } catch (err) {
+    console.error("Error submitting answer:", err);
+    setFeedback('⚠️ Failed to submit answer. ' + err);
+  }
+};
 
   useEffect(() => {
     fetchQuestion();
