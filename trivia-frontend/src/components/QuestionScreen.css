@@ -1,0 +1,7 @@
+button.correct:disabled {
+  border-color: green;
+}
+
+button.incorrect:disabled {
+  border-color: red;
+}
