@@ -5,3 +5,84 @@ button.correct:disabled {
 button.incorrect:disabled {
   border-color: red;
 }
+
+/* Wrapper fills the screen and centers content */
+.screen-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  box-sizing: border-box;
+  position: 'absolute';
+  left: '50%';
+  top: '50%';
+  Transform: 'translate(-50%, -50%)';
+}
+
+/* Score panel in top-right of visible area */
+.scorebar {
+  position: absolute;
+  top: -20px;
+  right: 32px;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+/* Fixed content box to prevent jumping */
+.content-box {
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Prevent jumping when feedback/button appear */
+.feedback-area {
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.question-text {
+  color: #1f3a93;
+  font-weight: 500;
+  font-family: 'Segoe UI', sans-serif;
+  margin-bottom: 1rem;
+}
+
+/* Basic button styling remains (can be styled more later) */
+button {
+  margin: 8px;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 200;
+  background-color: #fdfcf5; /* light paper-like background */
+  background-image: 
+    repeating-linear-gradient(
+      to bottom,
+      #add8e6,     /* blue line */
+      #add8e6 1px,
+      transparent 1px,
+      transparent 24px
+    );
+}
+
+.triviatime {
+  width: 250px;
+  height: auto;
+  margin-bottom: 1rem;
+}

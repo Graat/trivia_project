@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import api from '../api/triviaApi.js';
 import './QuestionScreen.css';
+import DOMPurify from 'dompurify';
+
+
+import TriviaTime from '../assets/triviatime.svg';
+
+
 
 export default function QuestionScreen() {
   const [question, setQuestion] = useState(null);
@@ -10,6 +16,8 @@ export default function QuestionScreen() {
   const [lives, setLives] = useState(5);
   const [feedback, setFeedback] = useState('');
   const [showNextButton, setShowNextButton] = useState(false);
+  const sanitizer = DOMPurify.sanitize;
+  const renderHtml = (htmlString) => (<span dangerouslySetInnerHTML={{ __html: sanitizer(htmlString) }} />);
 
   const fetchQuestion = async () => {
     const res = await api.get('/game/question');
@@ -51,42 +59,46 @@ const submitAnswer = async (answer) => {
   if (!question) return <div>Loading...</div>;
 
 return (
-  <div className="container">
+  <div style={{
+        position: 'absolute', left: '50%', top: '50%',
+        transform: 'translate(-50%, -50%)'
+      }}>
     <div className="scorebar">
-      <p>Score: {score} | Lives: {lives}</p>
+      <p className='question-text'>Score: {score} | Lives: {lives}</p>
     </div>
 
-    <h1>Trivia Time! :D</h1>
-    <h2>{question.question}</h2>
-    <ul>
-      {question.answers.map((ans) => {
-        let className = '';
-        if (showNextButton) {
-          if (ans === correctAnswer) className = 'correct';
-          else if (ans === selectedAnswer) className = 'incorrect';
-        }
+    <div className="content-box">
+      <img src={TriviaTime} alt="Trivia Time" className="triviatime" />
+    <h2 className='question-text'>{renderHtml(question.question)}</h2>
 
-        return (
-          <li key={ans}>
-            <button
-              onClick={() => submitAnswer(ans)}
-              disabled={showNextButton}
-              className={className}
-            >
-              {ans}
-            </button>
-          </li>
-        );
-      })}
-    </ul>
+      <ul>
+        {question.answers.map((ans) => {
+          let className = '';
+          if (showNextButton) {
+            if (ans === correctAnswer) className = 'correct';
+            else if (ans === selectedAnswer) className = 'incorrect';
+          }
 
-    <div className="feedback">
-      <p style={{ fontWeight: 'bold', visibility: 'visible' }}>
-        {feedback || '\u00A0'}
-      </p>
+          return (
+            <li key={ans}>
+              <button
+                onClick={() => submitAnswer(ans)}
+                disabled={showNextButton}
+                className={className}
+              >
+                {renderHtml(ans)}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+
+      {/* Reserve height to prevent jumping */}
+      <div className="feedback-area">
+        <p className='question-text'>{feedback || '\u00A0'}</p>
+        {showNextButton && <button onClick={fetchQuestion}>Next Question</button>}
+      </div>
     </div>
-
-    {showNextButton && <button onClick={fetchQuestion}>Next Question</button>}
   </div>
-  );
+);
 }
