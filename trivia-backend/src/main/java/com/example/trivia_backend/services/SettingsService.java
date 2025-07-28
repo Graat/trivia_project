@@ -16,7 +16,12 @@ public class SettingsService {
         this.settings = loadSettingsFromFile("src/main/java/com/example/trivia_backend/resources/cache/Settings.json");
     }
 
-    private Settings loadSettingsFromFile(String path) {
+    // overloaded constructor meant for testing.
+    public SettingsService(String path) {
+        this.settings = loadSettingsFromFile(path);
+    }
+
+    protected Settings loadSettingsFromFile(String path) {
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.readValue(new File(path), Settings.class);

@@ -31,6 +31,10 @@ public class TriviaService {
     }
 
     // TODO: include the CategoryDTO
+    // Note: Current question fetching does not guarantee full pool coverage.
+    // For high-scale or perfect-deduplication, we could cache all questions
+    // per category/difficulty and shuffle them locally.
+    // Not implemented here to avoid over-engineering.
     public void fetchNextQuestions(){
         if (session == null || session.isGameOver()) {
             throw new IllegalStateException("No active game session.");
@@ -54,8 +58,8 @@ public class TriviaService {
                     .filter(q -> !session.hasSeen(q))
                     .toList();
 
-            System.out.println("Fetched questions: " + fetched.size());
-            System.out.println("Unseen questions: " + newUnseen.size());
+            //  System.out.println("Fetched questions: " + fetched.size());
+            //  System.out.println("Unseen questions: " + newUnseen.size());
 
             unseenQuestions.addAll(newUnseen);
 
@@ -88,15 +92,12 @@ public class TriviaService {
     }
 
     public AnswerResultDTO submitAnswer(AnswerCheckDTO answerDTO) {
-        System.out.println("before session check");
         if (session == null) {
             throw new IllegalStateException("Game not started.");
         }
-        System.out.println("before Id check");
         if (!session.getCurrentQuestion().id().toString().equals(answerDTO.questionId())) {
             throw new IllegalArgumentException("Invalid question ID");
         }
-        System.out.println("Hello, world!");
         boolean isCorrect = session.checkAnswer(answerDTO.answer());
         if (isCorrect) {
             session.increaseScore(1);

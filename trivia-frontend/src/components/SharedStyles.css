@@ -5,11 +5,18 @@
   transform: translate(-50%, -50%);
 }
 
+.triviatime {
+  width: 300px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
 .text {
   color: #1f3a93;
   font-weight: 500;
   font-family: 'Segoe UI', sans-serif;
   margin-bottom: 1rem;
+  line-height: 1.3;
 }
 
 button {

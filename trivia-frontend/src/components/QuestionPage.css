@@ -1,9 +1,3 @@
-.triviatime {
-  width: 300px;
-  height: auto;
-  margin-bottom: 1rem;
-}
-
 .content-box {
   max-width: 600px;
   min-width: 600px;
@@ -74,7 +68,7 @@ body {
       #add8e6,     /* blue line */
       #add8e6 1px,
       transparent 1px,
-      transparent 24px
+      transparent 28px
     );
 }
 

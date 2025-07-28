@@ -3,8 +3,6 @@ import api from '../api/triviaApi.js';
 import './QuestionPage.css';
 import './SharedStyles.css';
 import DOMPurify from 'dompurify';
-
-
 import TriviaTime from '../assets/triviatime.svg';
 
 
@@ -54,8 +52,10 @@ const submitAnswer = async (answer) => {
     if (res.data.gameOver) {
       setIsGameOver(true);
     }
-    setShowNextButton(true);
-
+    else{
+      setShowNextButton(true);
+    }
+    
   } catch (err) {
     console.error("Error submitting answer:", err);
     setFeedback('⚠️ Failed to submit answer. ' + err);
@@ -81,8 +81,10 @@ return (
 
     <div className="content-box">
       <img src={TriviaTime} alt="Trivia Time" className="triviatime" />
-    <h2 className='text'>{renderHtml(question.question)}</h2>
 
+      <p className="text"><strong>Category: </strong>"{renderHtml(question.category)}"</p>
+
+      <h2 className='text'>{renderHtml(question.question)}</h2>
       <ul>
         {question.answers.map((ans) => {
           let className = '';
