@@ -1,0 +1,29 @@
+.center-page {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.text {
+  color: #1f3a93;
+  font-weight: 500;
+  font-family: 'Segoe UI', sans-serif;
+  margin-bottom: 1rem;
+}
+
+button {
+  margin: 8px;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #fdfcf5;
+  border-color: #1f3a93;
+  color: #1f3a93;
+  border-width: 2px;
+}
+
+button:focus {
+  outline: none;
+  background-color: #eef3ff;
+}

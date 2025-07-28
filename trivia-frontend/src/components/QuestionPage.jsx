@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../api/triviaApi.js';
-import './QuestionScreen.css';
+import './QuestionPage.css';
+import './SharedStyles.css';
 import DOMPurify from 'dompurify';
 
 
@@ -8,7 +9,8 @@ import TriviaTime from '../assets/triviatime.svg';
 
 
 
-export default function QuestionScreen() {
+export default function QuestionPage({ onGameOver }) {
+  const [isGameOver, setIsGameOver] = useState(false);
   const [question, setQuestion] = useState(null);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [correctAnswer, setCorrectAnswer] = useState(null);
@@ -45,7 +47,15 @@ const submitAnswer = async (answer) => {
     }
 
     setCorrectAnswer(res.data.correctAnswer);
+    if (!res.data.correct) {
+      setLives(res.data.livesRemaining);
+    }
+
+    if (res.data.gameOver) {
+      setIsGameOver(true);
+    }
     setShowNextButton(true);
+
   } catch (err) {
     console.error("Error submitting answer:", err);
     setFeedback('⚠️ Failed to submit answer. ' + err);
@@ -56,20 +66,22 @@ const submitAnswer = async (answer) => {
     fetchQuestion();
   }, []);
 
-  if (!question) return <div>Loading...</div>;
+  if (!question) return (
+  <div className="center-page">
+    <h2 className='text'>Loading...</h2>
+    </div>
+);
 
 return (
-  <div style={{
-        position: 'absolute', left: '50%', top: '50%',
-        transform: 'translate(-50%, -50%)'
-      }}>
-    <div className="scorebar">
-      <p className='question-text'>Score: {score} | Lives: {lives}</p>
+<>
+<div className="center-page">
+    <div className="score-box">
+      <p className='text'>Score: {score} | Lives: {lives}</p>
     </div>
 
     <div className="content-box">
       <img src={TriviaTime} alt="Trivia Time" className="triviatime" />
-    <h2 className='question-text'>{renderHtml(question.question)}</h2>
+    <h2 className='text'>{renderHtml(question.question)}</h2>
 
       <ul>
         {question.answers.map((ans) => {
@@ -95,10 +107,20 @@ return (
 
       {/* Reserve height to prevent jumping */}
       <div className="feedback-area">
-        <p className='question-text'>{feedback || '\u00A0'}</p>
+        <p className='text'>{feedback || '\u00A0'}</p>
         {showNextButton && <button onClick={fetchQuestion}>Next Question</button>}
       </div>
     </div>
   </div>
+  {isGameOver && (
+      <div className="overlay">
+        <div className="game-over-box">
+          <h2 className='text'>Game Over</h2>
+          <p className='text'>Your final score: {score}</p>
+          <button onClick={onGameOver}>Go Again!</button>
+        </div>
+      </div>
+    )}
+  </>
 );
 }

@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
-import StartScreen from './components/StartScreen';
-import QuestionScreen from './components/QuestionScreen';
+import StartPage from './components/StartPage.jsx';
+import QuestionPage from './components/QuestionPage.jsx';
 
 function App() {
   const [gameStarted, setGameStarted] = useState(false);
-  const [difficulty, setDifficulty] = useState('easy');
+  const [difficulty, setDifficulty] = useState('EASY');
+  const resetGame = () => { setGameStarted(false); };
 
   return (
     <div className="App">
       {!gameStarted ? (
-        <StartScreen
+        <StartPage
           difficulty={difficulty}
           setDifficulty={setDifficulty}
           onStart={() => setGameStarted(true)}
         />
       ) : (
-        <QuestionScreen />
+        <QuestionPage onGameOver={resetGame} />
       )}
     </div>
   );
 }
-
 export default App;
